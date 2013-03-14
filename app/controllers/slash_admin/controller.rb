@@ -22,5 +22,10 @@ module SlashAdmin
       self.class.slashadmin_model
     end
 
+    protected
+
+    def fetch_index
+      slashadmin_model.all
+    end
   end
 end
