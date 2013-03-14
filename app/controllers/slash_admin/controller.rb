@@ -1,10 +1,13 @@
 module SlashAdmin
   class Controller < ActionController::Base
+    include BatchActions
+
     class << self
       attr_reader :slashadmin_model
 
       def admin(model)
         @slashadmin_model = model
+        batch_model model
 
         include_admin_set SlashAdmin::Base
       end

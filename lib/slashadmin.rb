@@ -1,3 +1,5 @@
+require 'batch_actions'
+
 require "slash_admin/version"
 require "slash_admin/engine"
 require "slash_admin/activeadmin_compat"
