@@ -18,4 +18,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.0.0.beta1"
   s.add_dependency 'batch_actions'
+  s.add_dependency 'arbre'
 end
