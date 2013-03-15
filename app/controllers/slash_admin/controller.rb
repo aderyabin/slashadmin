@@ -25,6 +25,10 @@ module SlashAdmin
       self.class.slashadmin_model
     end
 
+    def render_default_index_actions
+      render_to_string :layout => false, :partial => "index/default_actions"
+    end
+  
     protected
 
     def fetch_index
