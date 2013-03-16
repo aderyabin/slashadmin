@@ -34,5 +34,9 @@ module SlashAdmin
     def fetch_index
       slashadmin_model.all
     end
+  
+    def fetch_show
+      slashadmin_model.find(params[:id])
+    end
   end
 end
