@@ -1,5 +1,5 @@
 module SlashAdmin
-  class Controller < ActionController::Base
+  class Controller < ApplicationController
     include BatchActions
 
     class << self
@@ -10,6 +10,12 @@ module SlashAdmin
         batch_model model
 
         include_admin_set SlashAdmin::Base
+        
+        Controller.slashadmin_controllers << self
+      end
+    
+      def slashadmin_controllers
+        @slashadmin_controllers ||= []
       end
 
       private
@@ -25,8 +31,8 @@ module SlashAdmin
       self.class.slashadmin_model
     end
 
-    def render_default_index_actions
-      render_to_string :layout => false, :partial => "index/default_actions"
+    def render_default_index_actions(object)
+      render_to_string(:layout => false, :partial => "admin/index/default_actions", :locals => { :object => object }).html_safe
     end
   
     protected
