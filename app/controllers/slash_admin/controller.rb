@@ -11,13 +11,14 @@ module SlashAdmin
 
         include_admin_set SlashAdmin::Base
         
-        Controller.slashadmin_controllers[model] = self
+        alias_name = "Admin#{model.name}Controller"
+        SlashAdmin.const_set alias_name, self
+        
+        unless Rails.application.config.cache_classes
+          ActiveSupport::Dependencies.autoloaded_constants << self.name << "SlashAdmin::#{alias_name}"
+        end
       end
     
-      def slashadmin_controllers
-        @slashadmin_controllers ||= {}
-      end
-
       private
 
       def include_admin_set(set)

@@ -1,17 +1,9 @@
 SlashAdmin::Engine.routes.draw do
-  SlashAdmin::Controller.slashadmin_controllers.each do |model, controller|
-    
-    name = controller.slashadmin_model.name.underscore
-    prefix = "/#{name}s"
-    SlashAdmin::Engine.config.admin_routes.each do |(method, path, action, helper_template)|
-      options = {}
-    
-      options[:to] = controller.action(action)
-      unless helper_template.nil?
-        options[:as] = helper_template.sub(/:entity/, name)
-      end
+  SlashAdmin.constants.each do |name|
+    if name =~ /^Admin(.+)Controller/
+      resource = $1.underscore
       
-      send method, "/#{name}s#{path}", options
+      resources resource, :controller => "admin_#{resource}"
     end
   end
 end
