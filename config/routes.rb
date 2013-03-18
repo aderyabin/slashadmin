@@ -1,6 +1,5 @@
 SlashAdmin::Engine.routes.draw do
-  puts "loading engine routes"
-  SlashAdmin::Controller.slashadmin_controllers.each do |controller|
+  SlashAdmin::Controller.slashadmin_controllers.each do |model, controller|
     
     name = controller.slashadmin_model.name.underscore
     prefix = "/#{name}s"

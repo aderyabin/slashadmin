@@ -11,11 +11,11 @@ module SlashAdmin
 
         include_admin_set SlashAdmin::Base
         
-        Controller.slashadmin_controllers << self
+        Controller.slashadmin_controllers[model] = self
       end
     
       def slashadmin_controllers
-        @slashadmin_controllers ||= []
+        @slashadmin_controllers ||= {}
       end
 
       private
