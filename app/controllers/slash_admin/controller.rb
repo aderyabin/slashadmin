@@ -1,6 +1,7 @@
 module SlashAdmin
   class Controller < ApplicationController
     include BatchActions
+    attr_reader :attributes_table_default_record
 
     class << self
       attr_reader :slashadmin_model
@@ -35,7 +36,27 @@ module SlashAdmin
     def render_default_index_actions(object)
       render_to_string(:layout => false, :partial => "admin/index/default_actions", :locals => { :object => object }).html_safe
     end
+
+    def self.show(&block)
+      define_method(:show) do
+        object = self.fetch_show
+        context = Arbre::Context.new({}, self)
+
+        @attributes_table_default_record = object
+        begin
+          context.instance_exec(object, &block)
+        ensure
+          @attributes_table_default_record = nil
+        end
   
+        @page = context.to_s
+  
+        respond_to do |format|
+          format.html { render :layout => "admin", :template => "admin/show" }
+        end
+      end
+    end
+
     protected
 
     def fetch_index
