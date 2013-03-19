@@ -75,6 +75,8 @@ module SlashAdmin
       object = self.fetch_show
       render_edit_partial(object)
       
+      @object = object
+      
       respond_to do |format|
         format.html { render :layout => "admin", :template => "admin/edit" }
       end
