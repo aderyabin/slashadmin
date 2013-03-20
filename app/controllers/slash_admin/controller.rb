@@ -1,6 +1,7 @@
 module SlashAdmin
   class Controller < ApplicationController
     include BatchActions
+    
     attr_reader :attributes_table_default_record
 
     class << self
@@ -19,6 +20,11 @@ module SlashAdmin
         unless Rails.application.config.cache_classes
           ActiveSupport::Dependencies.autoloaded_constants << self.name << "SlashAdmin::#{alias_name}"
         end
+        
+        
+        batch_action :destroy do |objects|
+          objects.each &:destroy
+        end
       end
     
       private
@@ -33,6 +39,10 @@ module SlashAdmin
     # CONTROLLER AND PARTIAL HELPERS
     def slashadmin_model
       self.class.slashadmin_model
+    end
+  
+    def render_index_batch_select(object)
+      render_to_string(:layout => false, :partial => "admin/index/batch_select", :locals => { :object => object }).html_safe
     end
 
     def render_default_index_actions(object)
@@ -120,6 +130,14 @@ module SlashAdmin
       
       respond_to do |format|
         format.html { render :layout => "admin", :template => "admin/edit" }
+      end
+    end
+
+    def dispatch_batch
+      send "batch_#{params[:batch_action]}"
+      
+      respond_to do |format|
+        format.html { redirect_to :action => "index" }
       end
     end
 
