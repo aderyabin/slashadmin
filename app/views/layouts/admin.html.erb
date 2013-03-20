@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<%= render :partial => "admin/menu_node", :locals => { :children => generate_menu[:children] } %>
+
 <%= yield %>
 
 </body>

@@ -1,0 +1,15 @@
+<ul class="menu">
+<% children.each do |child| %>
+  <li>
+    <% if child[:controller] %>
+      <%= link_to child[:label], :controller => child[:controller], :action => "index" %>
+    <% else %>
+      <%= child[:label] %>
+    <% end %>
+    
+    <% if child[:children].any? %>
+      <%= render :partial => "admin/menu_node", :locals => { :children => child[:children] } %>
+    <% end %>
+  </li>
+<% end %>
+</ul>
