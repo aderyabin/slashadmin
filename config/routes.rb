@@ -1,9 +1,10 @@
 SlashAdmin::Engine.routes.draw do
   SlashAdmin.constants.each do |name|
-    if name =~ /^Admin(.+)Controller/
-      resource = $1.underscore
+    const = SlashAdmin.const_get(name)
+    if const.is_a?(Class) && const < SlashAdmin::Controller
+      resource = const.slashadmin_model.name.underscore
       
-      resources resource, :controller => "admin_#{resource}"
+      resources "#{resource}s", :controller => "admin_#{resource}"
     end
   end
 end

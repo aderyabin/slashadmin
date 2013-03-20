@@ -5,7 +5,7 @@ module SlashAdmin
 
     class << self
       attr_reader :slashadmin_model
-      attr_accessor :slashadmin_index, :slashadmin_show, :slashadmin_form
+      attr_accessor :slashadmin_index, :slashadmin_show, :slashadmin_form, :slashadmin_permit_params
 
       def admin(model)
         @slashadmin_model = model
@@ -43,6 +43,7 @@ module SlashAdmin
     def self.index(&block); self.slashadmin_index = block; end
     def self.show(&block); self.slashadmin_show = block; end
     def self.form(&block); self.slashadmin_form = block; end
+    def self.permit_params(*args); self.slashadmin_permit_params = args; end
 
     # ACTIONS
     def index
@@ -50,6 +51,48 @@ module SlashAdmin
       
       respond_to do |format|
         format.html { render :layout => "admin", :template => "admin/index" }
+      end
+    end
+
+    def new
+      @object = slashadmin_model.new
+      render_form_partial
+      
+      respond_to do |format|
+        format.html { render :layout => "admin", :template => "admin/new" }
+      end
+    end
+
+    def create
+      @object = slashadmin_model.new(slashadmin_params)
+      
+      respond_to do |format|
+        if @object.save
+          format.html { redirect_to(@object, :notice => "#{slashadmin_model.name} was successfully created.") }
+        else
+          format.html { render :action => "new" }
+        end
+      end
+    end
+
+    def update
+      @object = self.fetch_show
+      
+      respond_to do |format|
+        if @object.update_attributes(slashadmin_params)
+          format.html { redirect_to(@object, :notice => "#{slashadmin_model.name} was successfully updated.") }
+        else
+          format.html { render :action => "edit" }
+        end
+      end
+    end
+
+    def destroy
+      @object = self.fetch_show
+      @object.destroy
+      
+      respond_to do |format|
+        format.html { redirect_to :action => "index" }
       end
     end
 
@@ -72,10 +115,8 @@ module SlashAdmin
     end
 
     def edit
-      object = self.fetch_show
-      render_edit_partial(object)
-      
-      @object = object
+      @object = self.fetch_show
+      render_form_partial
       
       respond_to do |format|
         format.html { render :layout => "admin", :template => "admin/edit" }
@@ -83,6 +124,25 @@ module SlashAdmin
     end
 
     protected
+
+    def slashadmin_params
+      name = slashadmin_model.name.underscore
+      allowed = self.class.slashadmin_permit_params
+      
+      if !params.respond_to?(:require)
+        return params[name]
+      end
+      
+      param_list = params.require(name)
+      
+      if allowed.nil?
+        param_list.permit!
+      elsif allowed.first.respond_to? :call
+        param_list.permit(*allowed.first.call)
+      else
+        param_list.permit(*allowed)
+      end
+    end
 
     # EXTENSION HELPERS
 
