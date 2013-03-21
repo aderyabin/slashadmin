@@ -1,63 +1,20 @@
 module SlashAdmin
   class Controller < ApplicationController
     include BatchActions
+    include SlashAdmin::Setup
+    include SlashAdmin::DSL
+    include SlashAdmin::ExtensionHelpers
     
     helper :all
-    
     attr_reader :attributes_table_default_record
 
-    class << self
-      attr_reader :slashadmin_model
-      attr_accessor :slashadmin_index, :slashadmin_show, :slashadmin_form, :slashadmin_permit_params, :slashadmin_menu
-
-      def admin(model)
-        @slashadmin_model = model
-        batch_model model
-
-        include_admin_set SlashAdmin::Base
+    def self.initialize_slashadmin_controller
+      @slashadmin_menu = {}
         
-        alias_name = "Admin#{model.name}Controller"
-        SlashAdmin.const_set alias_name, self
-        
-        unless Rails.application.config.cache_classes
-          ActiveSupport::Dependencies.autoloaded_constants << self.name << "SlashAdmin::#{alias_name}"
-        end
-
-        @slashadmin_menu = {}
-        
-        batch_action :destroy do |objects|
-          objects.each &:destroy
-        end
-      end
-    
-      private
-
-      def include_admin_set(set)
-        set.constants(false).each do |constant|
-          include(set.const_get(constant))
-        end
+      batch_action :destroy do |objects|
+        objects.each &:destroy
       end
     end
-
-    # CONTROLLER AND PARTIAL HELPERS
-    def slashadmin_model
-      self.class.slashadmin_model
-    end
-
-    def render_index_batch_select(object)
-      render_to_string(:layout => false, :partial => "admin/index/batch_select", :locals => { :object => object }).html_safe
-    end
-
-    def render_default_index_actions(object)
-      render_to_string(:layout => false, :partial => "admin/index/default_actions", :locals => { :object => object }).html_safe
-    end
-
-    # ACTION DSL
-    def self.index(&block); self.slashadmin_index = block; end
-    def self.show(&block); self.slashadmin_show = block; end
-    def self.form(&block); self.slashadmin_form = block; end
-    def self.permit_params(*args); self.slashadmin_permit_params = args; end
-    def self.menu(options = {}); self.slashadmin_menu = options; end
 
     # ACTIONS
     def index
@@ -164,16 +121,6 @@ module SlashAdmin
       else
         param_list.permit(*allowed)
       end
-    end
-
-    # EXTENSION HELPERS
-
-    def fetch_index
-      slashadmin_model.all
-    end
-  
-    def fetch_show
-      slashadmin_model.find(params[:id])
     end
   end
 end
