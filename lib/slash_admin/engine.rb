@@ -4,8 +4,11 @@ module SlashAdmin
     isolate_namespace SlashAdmin
     
     config.admin_controller_paths = [ "app/controllers/admin" ]
+    config.admin_modules          = [ "grid_fu", "show_for", "simple_form"]
     
-    initializer "slashadmin.preload_controllers", :after => :after_initialize do |app| 
+    initializer "slashadmin.preload_controllers", :after => :after_initialize do |app|
+      config.admin_modules.each { |name| require "slash_admin/#{name}" }
+    
       collect_controller_paths do |path|
         unless app.config.cache_classes
           ActiveSupport::Dependencies.autoload_paths << path.to_s
