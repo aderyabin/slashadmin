@@ -4,3 +4,5 @@ module SlashAdmin::SimpleForm; end
 
 require "slash_admin/simple_form/extension"
 require "slash_admin/simple_form/template"
+require "slash_admin/simple_form/bootstrap"
+require "slash_admin/simple_form/simple_form_enhancements"

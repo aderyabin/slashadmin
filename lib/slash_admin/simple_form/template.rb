@@ -4,6 +4,7 @@ module SlashAdmin::SimpleForm
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::ControllerHelper
     include ActionView::RecordIdentifier
+    include SimpleForm::ActionViewExtensions::FormHelper
     
     attr_reader :controller
     delegate :polymorphic_path, :to => :controller
@@ -13,6 +14,10 @@ module SlashAdmin::SimpleForm
     def initialize(controller, context)
       @controller = controller
       @context = context
+    end
+    
+    def unite(*args)
+      args
     end
 
     def capture(*args, &block)
@@ -80,7 +85,7 @@ module SlashAdmin::SimpleForm
     def tag(name, attributes)
       tag = Arbre::HTML::Tag.new(@context)
       tag.instance_variable_set :@tag_name, name
-      tag.attributes.merge! attributes
+      tag.attributes.merge! make_attributes(attributes)
       @context.current_arbre_element.add_child tag
       
       [ tag ]
@@ -89,12 +94,44 @@ module SlashAdmin::SimpleForm
     def content_tag_string(name, content, options, escape = true)
       tag = Arbre::HTML::Tag.new(@context)
       tag.instance_variable_set :@tag_name, name
-      tag.attributes.merge! options
+      tag.attributes.merge! make_attributes(options)
       
       tag.add_child(content)
       @context.current_arbre_element.add_child tag
       
       [ tag ]
+    end
+    
+    private
+    
+    def stringify_attribute_value(value)
+      case value
+      when String
+        value
+        
+      when Array
+        value.map(&method(:stringify_attribute_value)).join(" ")
+      
+      else
+        raise ArgumentError, "unexpected #{value.inspect} in attributes"
+      end
+    end
+    
+    def make_attributes(attributes)
+      out = {}
+      
+      attributes.each do |key, value|
+        content = stringify_attribute_value value
+        key = key.to_s
+        existing = out[key]
+        if existing.nil?
+          out[key] = content
+        else
+          out[key] = "#{existing} #{content}"
+        end
+      end
+      
+      out
     end
   end
 end
