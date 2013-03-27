@@ -9,6 +9,7 @@ module SlashAdmin
     helper :all
     def self.initialize_slashadmin_controller
       @slashadmin_menu = {}
+      @slashadmin_filters = []
         
       batch_action :destroy do |objects|
         objects.each &:destroy
@@ -17,7 +18,10 @@ module SlashAdmin
 
     # ACTIONS
     def index
-      @objects = slashadmin_unrestrict(fetch_index)
+      @q = slashadmin_unrestrict(slashadmin_restrict(self.class.slashadmin_model)).search(params[:q])
+      @objects = @q.result(:distinct => true).page(params[:page])
+      @filters = slashadmin_filters
+      
       render_index_partial
       
       respond_to do |format|
@@ -47,7 +51,7 @@ module SlashAdmin
     end
 
     def update
-      object = self.fetch_show
+      object = slashadmin_restrict.find(params[:id])
       updated = object.update_attributes(slashadmin_params)
       @object = slashadmin_unrestrict(object)
       
@@ -61,7 +65,7 @@ module SlashAdmin
     end
 
     def destroy
-      @object = self.fetch_show
+      @object = slashadmin_restrict.find(params[:id])
       @object.destroy
       
       respond_to do |format|
@@ -70,7 +74,7 @@ module SlashAdmin
     end
 
     def show
-      @object = slashadmin_unrestrict(self.fetch_show)
+      @object = slashadmin_unrestrict(slashadmin_restrict.find(params[:id]))
       context = Arbre::Context.new({}, self)
       
       context.instance_exec(@object, &self.class.slashadmin_show)
@@ -82,7 +86,7 @@ module SlashAdmin
     end
 
     def edit
-      @object = slashadmin_unrestrict(self.fetch_show)
+      @object = slashadmin_unrestrict(slashadmin_restrict.find(params[:id]))
       render_form_partial
       
       respond_to do |format|

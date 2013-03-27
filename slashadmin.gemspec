@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-sass', '~> 2.3.1.0'
   s.add_dependency 'haml'
   s.add_dependency 'kaminari'
+  s.add_dependency 'ransack'
 end

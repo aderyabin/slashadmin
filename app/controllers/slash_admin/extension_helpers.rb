@@ -9,15 +9,5 @@ module SlashAdmin
     def render_default_index_actions(object)
       render_to_string(:layout => false, :partial => "admin/index/default_actions", :locals => { :object => object }).html_safe
     end
-    
-    protected
-  
-    def fetch_index
-      index = slashadmin_restrict(self.class.slashadmin_model.page(params[:page]))
-    end
-  
-    def fetch_show
-      slashadmin_restrict.find(params[:id])
-    end
   end
 end

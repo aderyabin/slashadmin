@@ -1,11 +1,9 @@
 = page_title "#{model_name.pluralize}"
 = breadcrumbs
 
-= form_tag({ :action => "dispatch_batch" }) do
-  .index-actions
-    = link_to "New", { :action => "new" }, :class => "btn"
-    = button_tag "Destroy", :name => "batch_action", :value => "destroy", :id => nil, :class => "btn btn-danger"
-
-  = raw @table
-  
-= paginate @objects, :theme => "slashadmin_theme"
+- if @filters.any?
+  .row-fluid
+    .span8= render :partial => "admin/index/content"
+    .span4= render :partial => "admin/index/filters"
+- else
+  = render :partial => "admin/index/content"

@@ -1,0 +1,8 @@
+= form_tag({ :action => "dispatch_batch" }) do
+  .index-actions
+    = link_to "New", { :action => "new" }, :class => "btn"
+    = button_tag "Destroy", :name => "batch_action", :value => "destroy", :id => nil, :class => "btn btn-danger"
+
+  = raw @table
+  
+= paginate @objects, :theme => "slashadmin_theme"

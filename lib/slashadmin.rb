@@ -3,6 +3,7 @@ require 'arbre'
 require 'bootstrap-sass'
 require 'haml'
 require 'kaminari'
+require 'ransack'
 
 require 'slash_admin/version'
 require 'slash_admin/engine'
