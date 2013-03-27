@@ -7,7 +7,6 @@ module SlashAdmin
     include SlashAdmin::Authentication
     
     helper :all
-    attr_reader :attributes_table_default_record
     def self.initialize_slashadmin_controller
       @slashadmin_menu = {}
         
@@ -71,16 +70,10 @@ module SlashAdmin
     end
 
     def show
-      object = slashadmin_unrestrict(self.fetch_show)
+      @object = slashadmin_unrestrict(self.fetch_show)
       context = Arbre::Context.new({}, self)
       
-      @attributes_table_default_record = object
-      begin
-        context.instance_exec(object, &self.class.slashadmin_show)
-      ensure
-        @attributes_table_default_record = nil
-      end
-      
+      context.instance_exec(@object, &self.class.slashadmin_show)
       @page = context.to_s
       
       respond_to do |format|
@@ -103,6 +96,10 @@ module SlashAdmin
       respond_to do |format|
         format.html { redirect_to :action => "index" }
       end
+    end
+
+    def attributes_table_default_record
+      @object
     end
 
     protected

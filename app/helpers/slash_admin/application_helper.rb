@@ -66,6 +66,20 @@ module SlashAdmin
       end
     end
     
+    def model_name
+      controller.slashadmin_model_name
+    end
+    
+    def page_title(title)
+      content_for :title, title
+      
+      content_tag :h1, title, :class => "page-title"
+    end
+    
+    def breadcrumbs(trail = {})
+      render :partial => "admin/breadcrumbs", :locals => { :trail => trail, :title => content_for(:title) }
+    end
+    
     private
     
     def search_in_tree(node, &block)

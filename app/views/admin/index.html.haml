@@ -1,3 +1,6 @@
+= page_title "#{model_name.pluralize}"
+= breadcrumbs
+
 = form_tag({ :action => "dispatch_batch" }) do
   .index-actions
     = link_to "New", { :action => "new" }, :class => "btn"

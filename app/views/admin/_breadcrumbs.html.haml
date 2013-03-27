@@ -1,0 +1,6 @@
+%ul.breadcrumb
+  - trail.each do |url, title|
+    %li= link_to title, url
+    %span.divider /
+    
+  %li.active= title
