@@ -5,7 +5,7 @@ module SlashAdmin::Base
     protected
     
     def render_index_partial
-      @table = SlashAdmin::GridFu::ArbreTable.new(self, &self.class.slashadmin_index).to_html(self.fetch_index)
+      @table = SlashAdmin::GridFu::ArbreTable.new(self, &self.class.slashadmin_index).to_html(@objects)
     end
   end
 end

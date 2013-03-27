@@ -1,6 +1,7 @@
 require 'batch_actions'
 require 'arbre'
 require 'bootstrap-sass'
+require 'haml'
 
 require 'slash_admin/version'
 require 'slash_admin/engine'

@@ -5,8 +5,11 @@ module SlashAdmin
         :label => "root",
         :children => [],
         :priority => 0,
-        :parent => nil
+        :parent => nil,
+        :id => 0
       }
+      
+      index = 1
       
       SlashAdmin.each_controller do |controller|
         menu_options = controller.slashadmin_menu
@@ -23,9 +26,11 @@ module SlashAdmin
             :label => parent,
             :children => [],
             :priority => 10,
-            :parent => root
+            :parent => root,
+            :id => index
           }
           root[:children] << parent_node
+          index += 1
         end
         
         this_node = search_in_tree(root) { |n| n[:label] == label }
@@ -41,12 +46,24 @@ module SlashAdmin
         this_node[:priority] = menu_options.fetch(:priority, 10)
         this_node[:parent] = parent_node
         this_node[:controller] = "admin_#{controller.slashadmin_model_name.underscore}"
+        this_node[:id] = index
         parent_node[:children] << this_node
+        
+        index += 1
       end
       
       sort_tree root
       
       root
+    end
+    
+    def brand
+      brand = SlashAdmin::Engine.config.brand
+      if brand.respond_to? :call
+        instance_exec &brand
+      else
+        brand
+      end
     end
     
     private

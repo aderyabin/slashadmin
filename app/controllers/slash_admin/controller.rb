@@ -18,6 +18,7 @@ module SlashAdmin
 
     # ACTIONS
     def index
+      @objects = slashadmin_unrestrict(fetch_index)
       render_index_partial
       
       respond_to do |format|
@@ -26,7 +27,7 @@ module SlashAdmin
     end
 
     def new
-      @object = slashadmin_restrict.new
+      @object = slashadmin_unrestrict(slashadmin_restrict.new)
       render_form_partial
       
       respond_to do |format|
@@ -35,7 +36,7 @@ module SlashAdmin
     end
 
     def create
-      @object = slashadmin_restrict.new(slashadmin_params)
+      @object = slashadmin_unrestrict(slashadmin_restrict.new(slashadmin_params))
       
       respond_to do |format|
         if @object.save
@@ -47,10 +48,12 @@ module SlashAdmin
     end
 
     def update
-      @object = self.fetch_show
+      object = self.fetch_show
+      updated = object.update_attributes(slashadmin_params)
+      @object = slashadmin_unrestrict(object)
       
       respond_to do |format|
-        if @object.update_attributes(slashadmin_params)
+        if updated
           format.html { redirect_to(@object, :notice => "#{slashadmin_model_name} was successfully updated.") }
         else
           format.html { render :action => "edit" }
@@ -68,7 +71,7 @@ module SlashAdmin
     end
 
     def show
-      object = self.fetch_show
+      object = slashadmin_unrestrict(self.fetch_show)
       context = Arbre::Context.new({}, self)
       
       @attributes_table_default_record = object
@@ -86,7 +89,7 @@ module SlashAdmin
     end
 
     def edit
-      @object = self.fetch_show
+      @object = slashadmin_unrestrict(self.fetch_show)
       render_form_partial
       
       respond_to do |format|

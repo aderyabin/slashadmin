@@ -1,0 +1,21 @@
+%ul{ nav_attributes }
+  - children.each do |child|
+    - if child[:controller]
+      - link_target = { :controller => child[:controller], :action => "index" }
+    - else
+      - link_target = "javascript:void 0"
+    
+    - if child[:children].any? 
+      - node_attributes = { :class => "dropdown" }
+      - link_attributes = { :class => "dropdown-toggle", "data-toggle" => "dropdown", "id" => "navlabel_#{child[:id]}", "data-target" => "#" }
+    - else
+      - node_attributes = { }
+      - link_attributes = { }
+      
+    %li{node_attributes}
+      %a{ link_attributes, "href" => url_for(link_target) }
+        = child[:label]
+        - if child[:children].any?
+          %b.caret
+      - if child[:children].any?
+        = render :partial => "admin/menu_node", :locals => { :children => child[:children], :nav_attributes => { :class => "dropdown-menu", "role" => "menu", "aria-labelledby" => "navlabel_#{child[:id]}" } }
