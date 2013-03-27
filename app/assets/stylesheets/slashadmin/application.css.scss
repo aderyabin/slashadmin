@@ -13,3 +13,12 @@
 
 @import "bootstrap";
 @import "bootstrap-responsive";
+
+table.table input.table-select {
+  margin: 0;
+}
+
+.index-actions {
+  margin: 0 0 10px 0;
+  text-align: right;
+}

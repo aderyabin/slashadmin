@@ -17,4 +17,14 @@
       .row-fluid
         -# TODO: sidebar
         .span12
+          - if flash[:alert]
+            %div.alert.alert-error
+              = flash[:alert]
+              %button.close{ "type" => "button", "data-dismiss" => "alert" } &times;
+              
+          - if flash[:notice]
+            %div.alert.alert-success
+              = flash[:notice]
+              %button.close{ "type" => "button", "data-dismiss" => "alert" } &times;
+              
           = yield

@@ -51,12 +51,14 @@ module SlashAdmin::GridFu
   end
   
   class ArbreTable < ::GridFu::Table
-    def initialize(controller, &body)
+    def initialize(controller, options = {}, &body)
       renderer = ArbreRenderer.new(controller)
       
       super(
-        :renderer => renderer,
-        :helper   => controller,
+        {
+          :renderer => renderer,
+          :helper   => controller,
+        }.merge(options),
         &body
       )
     end

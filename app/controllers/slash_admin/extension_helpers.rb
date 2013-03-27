@@ -13,12 +13,7 @@ module SlashAdmin
     protected
   
     def fetch_index
-      index = slashadmin_restrict
-      if index.respond_to? :to_a
-        index
-      else
-        index.all
-      end
+      index = slashadmin_restrict(self.class.slashadmin_model.page(params[:page]))
     end
   
     def fetch_show

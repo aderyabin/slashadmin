@@ -2,6 +2,7 @@ require 'batch_actions'
 require 'arbre'
 require 'bootstrap-sass'
 require 'haml'
+require 'kaminari'
 
 require 'slash_admin/version'
 require 'slash_admin/engine'

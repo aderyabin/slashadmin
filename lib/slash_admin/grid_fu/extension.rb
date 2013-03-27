@@ -5,7 +5,11 @@ module SlashAdmin::Base
     protected
     
     def render_index_partial
-      @table = SlashAdmin::GridFu::ArbreTable.new(self, &self.class.slashadmin_index).to_html(@objects)
+      @table = SlashAdmin::GridFu::ArbreTable.new(self, {
+        :html_options => {
+          :class => "table table-striped table-bordered table-hover"
+        }
+      }, &self.class.slashadmin_index).to_html(@objects)
     end
   end
 end
