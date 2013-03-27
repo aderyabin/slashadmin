@@ -4,10 +4,10 @@ module SlashAdmin
     include SlashAdmin::Setup
     include SlashAdmin::DSL
     include SlashAdmin::ExtensionHelpers
+    include SlashAdmin::Authentication
     
     helper :all
     attr_reader :attributes_table_default_record
-
     def self.initialize_slashadmin_controller
       @slashadmin_menu = {}
         
