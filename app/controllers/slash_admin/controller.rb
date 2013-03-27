@@ -26,7 +26,7 @@ module SlashAdmin
     end
 
     def new
-      @object = slashadmin_model.new
+      @object = slashadmin_restrict.new
       render_form_partial
       
       respond_to do |format|
@@ -35,11 +35,11 @@ module SlashAdmin
     end
 
     def create
-      @object = slashadmin_model.new(slashadmin_params)
+      @object = slashadmin_restrict.new(slashadmin_params)
       
       respond_to do |format|
         if @object.save
-          format.html { redirect_to(@object, :notice => "#{slashadmin_model.name} was successfully created.") }
+          format.html { redirect_to(@object, :notice => "#{slashadmin_model_name} was successfully created.") }
         else
           format.html { render :action => "new" }
         end
@@ -51,7 +51,7 @@ module SlashAdmin
       
       respond_to do |format|
         if @object.update_attributes(slashadmin_params)
-          format.html { redirect_to(@object, :notice => "#{slashadmin_model.name} was successfully updated.") }
+          format.html { redirect_to(@object, :notice => "#{slashadmin_model_name} was successfully updated.") }
         else
           format.html { render :action => "edit" }
         end
@@ -105,7 +105,7 @@ module SlashAdmin
     protected
 
     def slashadmin_params
-      name = slashadmin_model.name.underscore
+      name = slashadmin_model_name.underscore
       allowed = self.class.slashadmin_permit_params
       
       if !params.respond_to?(:require)

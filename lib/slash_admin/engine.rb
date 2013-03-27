@@ -7,6 +7,8 @@ module SlashAdmin
     config.admin_modules          = [ "grid_fu", "show_for", "simple_form" ]
     config.authentication_method  = :authenticate_admin_user!
     config.current_user_method    = :current_admin_user
+    config.restrict_model         = false
+    config.unrestrict_model       = false
     
     initializer "slashadmin.preload_controllers", :after => :after_initialize do |app|
       config.admin_modules.each { |name| require "slash_admin/#{name}" }

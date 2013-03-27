@@ -3,13 +3,12 @@ module SlashAdmin
     extend ActiveSupport::Concern
   
     included do
-      attr_reader :slashadmin_model
-      delegate :slashadmin_model, :to => :class
+      delegate :slashadmin_model_name, :to => :class
     end
   
     module ClassMethods
       attr_reader :slashadmin_model
-
+      
       def admin(model)
         @slashadmin_model = model
         batch_model model
@@ -24,6 +23,10 @@ module SlashAdmin
         end
 
         self.initialize_slashadmin_controller
+      end
+      
+      def slashadmin_model_name
+        @slashadmin_model.name
       end
     
       private

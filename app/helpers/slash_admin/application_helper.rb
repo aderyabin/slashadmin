@@ -12,7 +12,7 @@ module SlashAdmin
         menu_options = controller.slashadmin_menu
         next if !menu_options || (menu_options.include?(:if) && !menu_options[:if].call)
         
-        label = menu_options.fetch(:label, controller.slashadmin_model.name)
+        label = menu_options.fetch(:label, controller.slashadmin_model_name)
         label = label.call if label.respond_to? :call
         
         parent = menu_options.fetch(:parent, "root")
@@ -40,7 +40,7 @@ module SlashAdmin
         this_node[:label] = label
         this_node[:priority] = menu_options.fetch(:priority, 10)
         this_node[:parent] = parent_node
-        this_node[:controller] = "admin_#{controller.slashadmin_model.name.underscore}"
+        this_node[:controller] = "admin_#{controller.slashadmin_model_name.underscore}"
         parent_node[:children] << this_node
       end
       

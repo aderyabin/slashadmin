@@ -9,7 +9,7 @@ module SlashAdmin
     protected
   
     def slashadmin_authenticate!
-      helper =  Engine.config.authentication_method
+      helper = Engine.config.authentication_method
       
       send helper unless helper == false
     end
@@ -23,7 +23,25 @@ module SlashAdmin
         send helper
       end
     end
-
-    
+  
+    def slashadmin_restrict(model = self.class.slashadmin_model)
+      helper = Engine.config.restrict_model
+      
+      if helper == false
+        model
+      else
+        instance_exec model, &helper
+      end
+    end
+  
+    def slashadmin_unrestrict(model)
+      helper = Engine.config.unrestrict_model
+      
+      if helper == false
+        model
+      else
+        instance_exec model, &helper
+      end
+    end
   end
 end
