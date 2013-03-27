@@ -10,6 +10,7 @@ module SlashAdmin
     config.restrict_model         = false
     config.unrestrict_model       = false
     config.brand                  = "SlashAdmin"
+    config.brand_url              = { :controller => "dashboard", :action => "index" }
     
     initializer "slashadmin.preload_controllers", :after => :after_initialize do |app|
       config.admin_modules.each { |name| require "slash_admin/#{name}" }

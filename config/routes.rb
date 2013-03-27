@@ -1,4 +1,6 @@
 SlashAdmin::Engine.routes.draw do
+  get '', :controller => "dashboard", :action => "index"
+  
   SlashAdmin.each_controller do |const|
     resource = const.slashadmin_model_name.underscore
       

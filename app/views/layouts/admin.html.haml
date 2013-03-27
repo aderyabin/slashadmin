@@ -12,7 +12,7 @@
     .container-fluid
       .navbar
         .navbar-inner
-          %span.brand= brand
+          = link_to brand, brand_url, :class => "brand"
           = render :partial => "admin/menu_node", :locals => { :children => generate_menu[:children], :nav_attributes => { :class => "nav" } }
       .row-fluid
         -# TODO: sidebar
