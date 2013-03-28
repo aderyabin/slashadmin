@@ -1,12 +1,11 @@
 module SlashAdmin
-  class Controller < ApplicationController
+  class Controller < SlashAdminController
     include BatchActions
     include SlashAdmin::Setup
     include SlashAdmin::DSL
     include SlashAdmin::ExtensionHelpers
-    include SlashAdmin::Authentication
+    include SlashAdmin::Restrictions
     
-    helper :all
     def self.initialize_slashadmin_controller
       @slashadmin_menu = {}
       @slashadmin_filters = []
@@ -20,7 +19,8 @@ module SlashAdmin
     def index
       @q = slashadmin_unrestrict(slashadmin_restrict(self.class.slashadmin_model)).search(params[:q])
       @objects = @q.result(:distinct => true).page(params[:page])
-      @filters = slashadmin_filters
+      @filters =
+        slashadmin_filters
       
       render_index_partial
       

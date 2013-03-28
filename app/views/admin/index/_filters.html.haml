@@ -3,5 +3,5 @@
     .control-group
       = f.label "#{filter[:name]}_cont", filter[:label], :class => "control-label"
       .controls= f.text_field "#{filter[:name]}_cont"
-  .controls
+  .form-actions
     = f.submit "Filter", :name => nil, :class => "btn btn-primary"
