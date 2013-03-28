@@ -1,6 +1,39 @@
-class SlashAdmin::ShowFor::AttributesTable < Arbre::Component
-  builder_method :attributes_table
+module Arbre::Element::BuilderMethods
+  def attributes_table(*args, &block)
+    klass = SlashAdmin::ShowFor::AttributesTable
+  
+    config = klass.show_for_config
+    restore = {}
+    begin
+      config.each do |key, value|
+        restore[key] = ShowFor.send(key)
+        ShowFor.send("#{key}=", value)
+      end
+  
+      insert_tag klass, *args, &block
+    ensure
+      restore.each do |key, value|
+        ShowFor.send("#{key}=", value)
+      end
+    end
+  end
+end
 
+class SlashAdmin::ShowFor::AttributesTable < Arbre::Component
+  def self.show_for_config
+    {
+      "show_for_tag"        => 'div',
+      "label_tag"           => 'div',
+      "label_class"         => 'show-for-label',
+      "separator"           => '',
+      "content_tag"         => 'div',
+      "content_class"       => 'show-for-content',
+      "blank_content_class" => 'show-for-content-blank',
+      "wrapper_tag"         => 'div',
+      "wrapper_class"       => 'show-for-wrapper'
+    }
+  end
+  
   def build(*args)
     case args.length
     when 0

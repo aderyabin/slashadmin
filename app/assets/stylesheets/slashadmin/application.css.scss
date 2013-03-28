@@ -22,3 +22,24 @@ table.table input.table-select {
   margin: 0 0 10px 0;
   text-align: right;
 }
+
+.show-for-wrapper:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.show-for-label {
+  width: 160px;
+  float: left;
+  padding: 5px;
+}
+
+.show-for-content {
+  margin-left: 160px;
+  padding: 5px;
+}
+
+.show-for-content-blank {
+  color: #999;
+}
