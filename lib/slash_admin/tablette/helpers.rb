@@ -1,4 +1,4 @@
-class GridFu::Table
+class Tablette::Table
   def batch_select
     column :select, :title => "Select" do |object|
       render_index_batch_select object

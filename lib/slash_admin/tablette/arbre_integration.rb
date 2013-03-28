@@ -1,4 +1,4 @@
-module SlashAdmin::GridFu
+module SlashAdmin::Tablette
   class ArbreRenderer
     attr_reader :context
     attr_accessor :element
@@ -50,7 +50,7 @@ module SlashAdmin::GridFu
     end
   end
   
-  class ArbreTable < ::GridFu::Table
+  class ArbreTable < ::Tablette::Table
     def initialize(controller, options = {}, &body)
       renderer = ArbreRenderer.new(controller)
       
