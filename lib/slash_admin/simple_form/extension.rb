@@ -12,7 +12,8 @@ module SlashAdmin::Base
         :button_class           => 'btn',
         :error_notification_tag => :div,
         :label_class            => 'control-label',
-        :form_class             => 'simple_form form-horizontal'
+        :form_class             => 'simple_form form-horizontal',
+        :control_wrapper_class  => 'form-actions'
       }
       
       prev = {}
