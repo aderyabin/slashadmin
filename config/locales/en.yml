@@ -15,8 +15,10 @@ en:
       title: '%{model}'
       batch_select_column: ''
       actions_column: 'Actions'
+      association_link: '%{model} %{id}'
     show:
       title: '%{model} %{id}'
+      association_link: '%{model} %{id}'
     edit:
       title: 'Edit %{model} %{id}'
     new:

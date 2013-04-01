@@ -3,6 +3,7 @@ module SlashAdmin::SimpleForm
     include ActionView::Helpers::FormHelper
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::ControllerHelper
+    include ActionView::Helpers::FormOptionsHelper
     include ActionView::RecordIdentifier
     include SimpleForm::ActionViewExtensions::FormHelper
     

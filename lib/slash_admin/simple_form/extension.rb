@@ -4,8 +4,8 @@ module SlashAdmin::Base
       
     included do
       SlashAdmin::Controller.slashadmin_default_form = ->(f) do
-        slashadmin_form_columns.each do |column|
-          f.input column
+        slashadmin_default_inputs.each do |(type, name)|
+          f.send type, name
         end
         
         f.controls do

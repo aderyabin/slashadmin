@@ -2,32 +2,38 @@ module SlashAdmin
   module ExtensionHelpers
     extend ActiveSupport::Concern
     
-    def slashadmin_form_columns
-      column_names = Set[]
+    def slashadmin_default_inputs(include_readonly = false)
+      columns = []
         
       slashadmin_model.columns.each do |column|
-        next if column.primary || column.name == "created_at" || column.name == "updated_at"
-        column_names.add column.name
+        next if !include_readonly && (column.primary || column.name == "created_at" || column.name == "updated_at")
+        columns << [ :input, column.name ]
       end
         
+      drop = Set[]
+      associate = {}
+
       slashadmin_model.reflect_on_all_associations.each do |assoc|
-        column_names.delete assoc.counter_cache_column
+        unless include_readonly || assoc.counter_cache_column.nil?
+          drop << assoc.counter_cache_column
+        end
+
         if assoc.belongs_to?
-          column_names.delete assoc.foreign_key
+          associate[assoc.foreign_key] = assoc.name
+        end
+      end
+
+      columns.reject! { |name| drop.include? name }
+      columns.map! do |name|
+        assoc = associate[name[1]]
+        if name[0] == :input && !assoc.nil?
+          [ :association, assoc ]
+        else
+          name
         end
       end
       
-      column_names
-    end
-    
-    def slashadmin_index_columns
-      column_names = Set[]
-        
-      slashadmin_model.columns.each do |column|
-        column_names.add column.name
-      end
-      
-      column_names
+      columns
     end
     
     def render_index_batch_select(object)
