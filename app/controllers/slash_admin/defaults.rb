@@ -7,6 +7,8 @@ module SlashAdmin
         columns = slashadmin_index_columns
 
         header! do
+          column ''
+
           columns.each do |name|
             column slashadmin_model.human_attribute_name(name)
           end
@@ -14,6 +16,8 @@ module SlashAdmin
           column 'Actions'
         end
 
+        batch_select
+        
         columns.each do |name|
           column name
         end
