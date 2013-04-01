@@ -1,6 +1,18 @@
 module SlashAdmin::Base
   module SimpleForm
     extend ActiveSupport::Concern
+      
+    included do
+      SlashAdmin::Controller.slashadmin_default_form = ->(f) do
+        slashadmin_form_columns.each do |column|
+          f.input column
+        end
+        
+        f.controls do
+          f.button :submit
+        end
+      end
+    end
 
     def render_form_partial
       context = Arbre::Context.new({}, self)

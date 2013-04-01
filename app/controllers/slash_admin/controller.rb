@@ -5,11 +5,15 @@ module SlashAdmin
     include SlashAdmin::DSL
     include SlashAdmin::ExtensionHelpers
     include SlashAdmin::Restrictions
+    include SlashAdmin::Defaults
     
     def self.initialize_slashadmin_controller
       @slashadmin_menu = {}
       @slashadmin_filters = []
-        
+      @slashadmin_index = Controller.slashadmin_default_index
+      @slashadmin_show  = Controller.slashadmin_default_show
+      @slashadmin_form  = Controller.slashadmin_default_form
+    
       batch_action :destroy do |objects|
         objects.each &:destroy
       end

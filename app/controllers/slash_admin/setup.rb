@@ -3,7 +3,7 @@ module SlashAdmin
     extend ActiveSupport::Concern
   
     included do
-      delegate :slashadmin_model_name, :to => :class
+      delegate :slashadmin_model_name, :slashadmin_model, :to => :class
     end
   
     module ClassMethods

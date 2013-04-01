@@ -10,6 +10,7 @@ module SlashAdmin
   
     module ClassMethods
       attr_accessor *DSL_METHODS
+      attr_accessor :slashadmin_default_index, :slashadmin_default_show, :slashadmin_default_form
     
       def index(&block); self.slashadmin_index = block; end
       def show(&block); self.slashadmin_show = block; end
