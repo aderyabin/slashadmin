@@ -1,4 +1,7 @@
-= page_title "Edit #{model_name} #{@object.id}"
-= breadcrumbs({ :action => "index" } => model_name.pluralize, { :action => "show" } => "#{model_name} #{@object.id}")
+- breadcrumbs do |b|
+  - b.trail I18n.t("admin.index.title", :model => model_name), :action => "index"
+  - b.trail I18n.t("admin.show.title",  :model => model_name, :id => @object.id), :action => "show"
+  
+= page_title I18n.t("admin.edit.title", :model => model_name, :id => @object.id)
 
 = @form

@@ -1,0 +1,25 @@
+en:
+  admin:
+    layout:
+      title: '%{page} :: %{brand}'
+    flash:
+      created: '%{model} was successfully created.'
+      updated: '%{model} was successfully updated.'
+    actions:
+      new: 'New'
+      show: 'Show'
+      edit: 'Edit'
+      destroy: 'Destroy'
+      filter: 'Filter'
+    index:
+      title: '%{model}'
+      batch_select_column: ''
+      actions_column: 'Actions'
+    show:
+      title: '%{model} %{id}'
+    edit:
+      title: 'Edit %{model} %{id}'
+    new:
+      title: 'New %{model}'
+    dashboard:
+      title: 'Dashboard'

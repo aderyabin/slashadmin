@@ -1,7 +1,7 @@
 = form_tag({ :action => "dispatch_batch" }) do
   .index-actions
-    = link_to "New", { :action => "new" }, :class => "btn"
-    = button_tag "Destroy", :name => "batch_action", :value => "destroy", :id => nil, :class => "btn btn-danger"
+    = link_to I18n.t("admin.actions.new"), { :action => "new" }, :class => "btn"
+    = button_tag I18n.t("admin.actions.destroy"), :name => "batch_action", :value => "destroy", :id => nil, :class => "btn btn-danger"
 
   = raw @table
   

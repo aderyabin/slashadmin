@@ -7,17 +7,17 @@ module SlashAdmin
         columns = slashadmin_index_columns
 
         header! do
-          column ''
+          column I18n.t('admin.index.batch_select_column')
 
           columns.each do |name|
             column slashadmin_model.human_attribute_name(name)
           end
 
-          column 'Actions'
+          column I18n.t('admin.index.actions_column')
         end
 
         batch_select
-        
+
         columns.each do |name|
           column name
         end

@@ -47,7 +47,7 @@ module SlashAdmin
       
       respond_to do |format|
         if @object.save
-          format.html { redirect_to(@object, :notice => "#{slashadmin_model_name} was successfully created.") }
+          format.html { redirect_to(@object, :notice => I18n.t('admin.flash.created', :model => slashadmin_model.model_name.human)) }
         else
           format.html { render :action => "new" }
         end
@@ -61,7 +61,7 @@ module SlashAdmin
       
       respond_to do |format|
         if updated
-          format.html { redirect_to(@object, :notice => "#{slashadmin_model_name} was successfully updated.") }
+          format.html { redirect_to(@object, :notice => I18n.t('admin.flash.updated', :model => slashadmin_model.model_name.human)) }
         else
           format.html { render :action => "edit" }
         end

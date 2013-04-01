@@ -1,5 +1,17 @@
 module SlashAdmin
   module ApplicationHelper
+    class BreadcrumbBuilder
+      attr_reader :list
+
+      def initialize
+        @list = {}
+      end
+
+      def trail(name, path)
+        @list[name] = path
+      end
+    end
+
     def self.config_helper(*names)
       names.each do |name|
         define_method(name) do 
@@ -72,18 +84,33 @@ module SlashAdmin
       root
     end
     
-    def model_name
-      controller.slashadmin_model_name
+    def model_name(options = {})
+      controller.slashadmin_model.model_name.human(options)
     end
     
     def page_title(title)
-      content_for :title, title
-      
-      content_tag :h1, title, :class => "page-title"
+      content_for(:title, title)
+
+      buffer = ''.html_safe
+
+      unless @_breadcrumbs_trail.nil?
+        buffer.safe_concat render(:partial => 'admin/breadcrumbs', :locals => { :trail => @_breadcrumbs_trail, :title => content_for(:title) })
+      end
+      buffer.safe_concat content_tag(:h1, title, :class => 'page-header')
     end
     
-    def breadcrumbs(trail = {})
-      render :partial => "admin/breadcrumbs", :locals => { :trail => trail, :title => content_for(:title) }
+    def breadcrumbs(&block)
+      if block_given?
+        builder = BreadcrumbBuilder.new
+
+        yield builder
+
+        @_breadcrumbs_trail = builder.list
+      else
+        @_breadcrumbs_trail = {}
+      end
+
+      #render :partial => "admin/breadcrumbs", :locals => { :trail => trail, :title => content_for(:title) }
     end
     
     private

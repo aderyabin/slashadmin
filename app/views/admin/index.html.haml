@@ -1,5 +1,5 @@
-= page_title "#{model_name.pluralize}"
-= breadcrumbs
+- breadcrumbs
+= page_title I18n.t('admin.index.title', :model => model_name)
 
 - if @filters.any?
   .row-fluid
