@@ -11,7 +11,8 @@ module SlashAdmin
     config.unrestrict_model       = false
     config.brand                  = "SlashAdmin"
     config.brand_url              = { :controller => "dashboard", :action => "index" }
-    
+    config.activeadmin_compat     = false
+
     initializer "slashadmin.preload_controllers", :after => :after_initialize do |app|
       config.admin_modules.each { |name| require "slash_admin/#{name}" }
     
@@ -23,6 +24,10 @@ module SlashAdmin
         Dir.glob(path.join("**/*.rb")).each do |file|
           require_dependency file
         end
+      end
+
+      SlashAdmin::Shims.constants.each do |name|
+        SlashAdmin::Shims.const_get(name).include!
       end
     end
 

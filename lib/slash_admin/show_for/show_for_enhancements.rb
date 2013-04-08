@@ -1,6 +1,5 @@
 class ShowFor::Builder
   def wrap_label_and_content(name, value, options, &block)
-    puts "wrap label and contents: #{[name, value, options, block].inspect}"
     children = [ ]
     
     label_text = label(name, options, false)

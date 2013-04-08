@@ -106,10 +106,6 @@ module SlashAdmin
       end
     end
 
-    def attributes_table_default_record
-      @object
-    end
-
     protected
 
     def slashadmin_params

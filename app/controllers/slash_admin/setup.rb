@@ -14,6 +14,10 @@ module SlashAdmin
         batch_model model
 
         include_admin_set SlashAdmin::Base
+
+        if SlashAdmin::Engine.config.activeadmin_compat
+          include_admin_set SlashAdmin::ActiveAdmin
+        end
         
         alias_name = "Admin#{model.name}Controller"
         SlashAdmin.const_set alias_name, self
@@ -32,8 +36,8 @@ module SlashAdmin
       private
 
       def include_admin_set(set)
-        set.constants(false).each do |constant|
-          include(set.const_get(constant))
+        set.constants.each do |constant|
+          include set.const_get(constant)
         end
       end
     end
