@@ -1,0 +1,10 @@
+= slashadmin_show_for(@object) do |b|
+  - slashadmin_default_inputs(true).each do |type, name|
+    - if type == :association
+      = b.attribute(name.to_sym) do 
+        - target = record.send name
+
+        - link_text = I18n.t('admin.index.assoication_link', :model => model_name, :id => target.id)
+        = link_to link_text, { :controller => "admin_#{name}", :action => :show, :id => target.id }
+    - else
+      = b.attribute name.to_sym

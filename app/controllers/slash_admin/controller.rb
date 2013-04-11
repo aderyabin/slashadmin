@@ -3,16 +3,11 @@ module SlashAdmin
     include BatchActions
     include SlashAdmin::Setup
     include SlashAdmin::DSL
-    include SlashAdmin::ExtensionHelpers
     include SlashAdmin::Restrictions
-    include SlashAdmin::Defaults
     
     def self.initialize_slashadmin_controller
       @slashadmin_menu = {}
       @slashadmin_filters = []
-      @slashadmin_index = Controller.slashadmin_default_index
-      @slashadmin_show  = Controller.slashadmin_default_show
-      @slashadmin_form  = Controller.slashadmin_default_form
     
       batch_action :destroy do |objects|
         objects.each &:destroy
@@ -79,11 +74,14 @@ module SlashAdmin
 
     def show
       @object = slashadmin_unrestrict(slashadmin_restrict.find(params[:id]))
-      context = Arbre::Context.new({}, self)
-      
-      context.instance_exec(@object, &self.class.slashadmin_show)
-      @page = context.to_s
-      
+      if self.class.slashadmin_show.nil?
+        @page = render_to_string(:partial => "/admin/show/default_show").html_safe
+      else
+        context = Arbre::Context.new({}, self)
+        context.instance_exec(@object, &self.class.slashadmin_show)
+        @page = context.to_s
+      end
+
       respond_to do |format|
         format.html { render :layout => "admin", :template => "admin/show" }
       end

@@ -5,11 +5,15 @@ module SlashAdmin::Base
     protected
     
     def render_index_partial
-      @table = SlashAdmin::Tablette::ArbreTable.new(self, {
-        :html_options => {
-          :class => "table table-striped table-bordered table-hover"
-        }
-      }, &self.class.slashadmin_index).to_html(@objects)
+      if self.class.slashadmin_index.nil?
+        @table = render_to_string :partial => "/admin/index/default_index"
+      else
+        @table = SlashAdmin::Tablette::ArbreTable.new(self, {
+          :html_options => {
+            :class => "table table-striped table-bordered table-hover"
+          }
+        }, &self.class.slashadmin_index).to_html(@objects)
+      end
     end
   end
 end

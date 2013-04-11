@@ -1,0 +1,6 @@
+= slashadmin_simple_form_for @object do |f|
+  - slashadmin_default_inputs.each do |(type, name)|
+    = f.send type, name
+        
+  = f.controls do
+    = f.button :submit

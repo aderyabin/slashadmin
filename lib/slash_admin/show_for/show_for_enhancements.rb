@@ -10,7 +10,7 @@ class ShowFor::Builder
     
     children << content(value, options, false, &block)
     
-    wrap_with(:wrapper, unite(children), options)
+    wrap_with(:wrapper, unite(*children), options)
   end
   
   private
@@ -20,8 +20,9 @@ class ShowFor::Builder
       @template.unite *args
     else
       buf = ""
-      args.each(&buf.method(:concat))
-      buf
+      args.each &buf.method(:concat)
+
+      buf.html_safe
     end
   end
 end

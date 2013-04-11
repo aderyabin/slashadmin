@@ -1,0 +1,22 @@
+= tablette_for @objects, :html_options => { :class => "table table-striped table-bordered table-hover" } do
+  - columns = slashadmin_default_inputs(true)
+  - header! do
+    - column I18n.t('admin.index.batch_select_column')
+
+    - columns.each do |type, name|
+      - column attribute_name(name)
+
+    - column I18n.t('admin.index.actions_column')
+
+  - batch_select
+  - columns.each do |type, name|
+    - if type == :association
+      - column name do |record|
+        - target = record.send name
+
+        - link_text = I18n.t('admin.index.assoication_link', :model => model_name, :id => target.id)
+        = link_to link_text, { :controller => "admin_#{name}", :action => :show, :id => target.id }
+    - else
+      - column name
+
+  - default_actions
