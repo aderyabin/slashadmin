@@ -11,10 +11,10 @@ module SlashAdmin
     config.unrestrict_model       = false
     config.brand                  = "SlashAdmin"
     config.brand_url              = { :controller => "dashboard", :action => "index" }
-    config.activeadmin_compat     = false
-
+    config.compatibility          = nil
+    
     initializer "slashadmin.preload_controllers", :after => :after_initialize do |app|
-      config.admin_modules.each { |name| require "slash_admin/#{name}" }
+      config.admin_modules.each { |name| require "slash_admin/modules/#{name}" }
     
       collect_controller_paths do |path|
         unless app.config.cache_classes

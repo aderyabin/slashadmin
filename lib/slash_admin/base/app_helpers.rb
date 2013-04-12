@@ -15,5 +15,13 @@ module SlashAdmin
         end
       end
     end
+
+    def compatible_with?(engine)
+      SlashAdmin::Engine.config.compatibility == engine
+    end
+
+    def configure(&block)
+      yield SlashAdmin::Engine.config
+    end
   end
 end

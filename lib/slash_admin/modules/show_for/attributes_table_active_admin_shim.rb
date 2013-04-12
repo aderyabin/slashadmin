@@ -1,9 +1,4 @@
-module SlashAdmin::Shims::AttributesTableActiveAdminShim
-  extend ActiveSupport::Concern
-  extend SlashAdmin::Shim
-
-  include_into SlashAdmin::ShowFor::AttributesTable, :if => -> { SlashAdmin::Engine.config.activeadmin_compat }
-
+SlashAdmin.shim_for(SlashAdmin::ShowFor::AttributesTable, if: -> { SlashAdmin.compatible_with? :activeadmin }) do
   included do
     alias_method_chain :build, :activeadmin
   end

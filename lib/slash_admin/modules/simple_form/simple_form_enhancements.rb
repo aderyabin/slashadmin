@@ -1,4 +1,3 @@
-
 module SimpleForm
   class Wrappers::Many
     def render(input)

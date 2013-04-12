@@ -13,10 +13,11 @@ module SlashAdmin
         @slashadmin_model = model
         batch_model model
 
-        include_admin_set SlashAdmin::Base
+        include_admin_set SlashAdmin::AdminSets::Base
 
-        if SlashAdmin::Engine.config.activeadmin_compat
-          include_admin_set SlashAdmin::ActiveAdmin
+        compat = Engine.config.compatibility
+        unless compat.nil?
+          include_admin_set SlashAdmin::AdminSets.const_get(compat.to_s.camelize)
         end
         
         alias_name = "Admin#{model.name}Controller"
