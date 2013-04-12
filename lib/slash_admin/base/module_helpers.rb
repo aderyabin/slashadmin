@@ -7,22 +7,20 @@ module SlashAdmin
 
       SlashAdmin::AdminSets.const_get(module_set).const_set(name, mod)
 
-      mod.instance_exec(&block)
+      mod.class_exec(&block)
     end
 
-    def shim_for(klass, options = {}, &block)
-      name = generate_module_name
-
+    def shim_for(klass, &block)
       mod = Module.new do
         extend ActiveSupport::Concern
         extend SlashAdmin::Shim
 
-        include_into klass, options
+        include_into klass
       end
 
-      SlashAdmin::Shims.const_set("Shim#{@shim_id}", mod)
+      SlashAdmin::Shims.const_set(generate_module_name, mod)
 
-      mod.instance_exec(&block)
+      mod.class_exec(&block)
     end
 
     def view_helper(name, &block)
@@ -32,7 +30,7 @@ module SlashAdmin
 
       SlashAdmin::ViewHelpers.const_set(name, mod)
 
-      mod.instance_exec(&block)
+      mod.class_exec(&block)
 
       if defined? SlashAdmin::ApplicationHelper
         SlashAdmin::ApplicationHelper.send :include, mod

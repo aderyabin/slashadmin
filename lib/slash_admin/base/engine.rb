@@ -14,8 +14,14 @@ module SlashAdmin
     config.compatibility          = nil
     
     initializer "slashadmin.preload_controllers", :after => :after_initialize do |app|
-      config.admin_modules.each { |name| require "slash_admin/modules/#{name}" }
+      config.admin_modules.each do |name|
+        require "slash_admin/modules/#{name}"
+      end
     
+      unless config.compatibility.nil?
+        require "slash_admin/modules/#{config.compatibility}"
+      end
+
       collect_controller_paths do |path|
         unless app.config.cache_classes
           ActiveSupport::Dependencies.autoload_paths << path.to_s

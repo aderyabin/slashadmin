@@ -1,0 +1,2 @@
+require_relative "active_admin/attributes_table_extension"
+require_relative "active_admin/attributes_table_shim"

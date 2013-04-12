@@ -1,4 +1,4 @@
-SlashAdmin.shim_for(SlashAdmin::ShowFor::AttributesTable, if: -> { SlashAdmin.compatible_with? :activeadmin }) do
+SlashAdmin.shim_for(SlashAdmin::ShowFor::AttributesTable) do
   included do
     alias_method_chain :build, :activeadmin
   end
