@@ -1,14 +1,13 @@
 module SlashAdmin
   module Setup
     extend ActiveSupport::Concern
-  
-    included do
-      delegate :slashadmin_model_name, :slashadmin_model, :to => :class
-    end
+
+    def slashadmin_model_name; self.class.slashadmin_model_name; end
+    def slashadmin_model; self.class.slashadmin_model; end
   
     module ClassMethods
       attr_reader :slashadmin_model
-      
+
       def admin(model)
         @slashadmin_model = model
         batch_model model

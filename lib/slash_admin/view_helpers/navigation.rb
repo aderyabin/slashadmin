@@ -23,12 +23,11 @@ SlashAdmin.view_helper(:Navigation) do
     index = 1
     
     SlashAdmin.each_controller do |controller|
-      menu_options = controller.slashadmin_menu
-      next if !menu_options || (menu_options.include?(:if) && !menu_options[:if].call)
+      menu_options = controller.new.slashadmin_layout.menu_options
+
+      next if menu_options[:hidden] || (menu_options.include?(:if) && !self.controller.instance_exec(&menu_options[:if]))
       
       label = menu_options.fetch(:label, controller.slashadmin_model_name)
-      label = label.call if label.respond_to? :call
-      
       parent = menu_options.fetch(:parent, "root")
       
       parent_node = search_in_tree(root) { |n| n[:label] == parent }

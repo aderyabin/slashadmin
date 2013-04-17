@@ -4,7 +4,9 @@ module SlashAdmin::SimpleForm
     include ActionView::Helpers::DateHelper
     include ActionView::Helpers::ControllerHelper
     include ActionView::Helpers::FormOptionsHelper
-    include ActionView::RecordIdentifier
+    if defined? ActionView::RecordIdentifier
+      include ActionView::RecordIdentifier
+    end
     include SimpleForm::ActionViewExtensions::FormHelper
     
     attr_reader :controller

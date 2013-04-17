@@ -26,11 +26,10 @@ module SlashAdmin
         unless app.config.cache_classes
           ActiveSupport::Dependencies.autoload_paths << path.to_s
         end
-  
-        Dir.glob(path.join("**/*.rb")).each do |file|
-          require_dependency file
-        end
       end
+
+      load_controllers
+      ActionDispatch::Reloader.to_prepare &method(:load_controllers)
 
       SlashAdmin::Shims.constants.each do |name|
         SlashAdmin::Shims.const_get(name).include!
@@ -38,6 +37,17 @@ module SlashAdmin
     end
 
     private
+
+    def load_controllers
+      unless defined? SlashAdmin::Controller
+        Rails.logger.info "Reloading SlashAdmin controllers"
+        collect_controller_paths do |path|
+          Dir.glob(path.join("**/*.rb")).each do |file|
+            require_dependency file
+          end
+        end
+      end
+    end
 
     def collect_controller_paths(&block)
       roots = Rails::Application::Railties.engines.map { |engine| engine.config.root }

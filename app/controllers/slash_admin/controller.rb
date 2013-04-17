@@ -4,11 +4,8 @@ module SlashAdmin
     include SlashAdmin::Setup
     include SlashAdmin::DSL
     include SlashAdmin::Restrictions
-    
+
     def self.initialize_slashadmin_controller
-      @slashadmin_menu = {}
-      @slashadmin_filters = []
-    
       batch_action :destroy do |objects|
         objects.each &:destroy
       end
