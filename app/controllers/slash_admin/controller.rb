@@ -5,6 +5,8 @@ module SlashAdmin
     include SlashAdmin::DSL
     include SlashAdmin::Restrictions
 
+    before_filter :evaluate_blocks
+
     def self.initialize_slashadmin_controller
       batch_action :destroy do |objects|
         objects.each &:destroy
@@ -15,9 +17,7 @@ module SlashAdmin
     def index
       @q = slashadmin_unrestrict(slashadmin_restrict(self.class.slashadmin_model)).search(params[:q])
       @objects = @q.result(:distinct => true).page(params[:page])
-      @filters =
-        slashadmin_filters
-      
+
       render_index_partial
       
       respond_to do |format|
@@ -74,9 +74,17 @@ module SlashAdmin
       if self.class.slashadmin_show.nil?
         @page = render_to_string(:partial => "/admin/show/default_show").html_safe
       else
-        context = Arbre::Context.new({}, self)
-        context.instance_exec(@object, &self.class.slashadmin_show)
-        @page = context.to_s
+        page = nil
+
+        view_context.instance_exec do
+          define_singleton_method(@object.class.model_name.singular) { @object }
+
+          context = Arbre::Context.new({}, self)
+          context.instance_exec(@object, &controller.slashadmin_show)
+          page = context.to_s
+        end
+
+        @page = page
       end
 
       respond_to do |format|
@@ -120,6 +128,13 @@ module SlashAdmin
       else
         param_list.permit(*allowed)
       end
+    end
+
+    private
+
+    def evaluate_blocks
+      @layout = self.slashadmin_layout
+      @routing = self.slashadmin_routing
     end
   end
 end

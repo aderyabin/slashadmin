@@ -6,6 +6,8 @@ module SlashAdmin::SimpleForm
     include ActionView::Helpers::FormOptionsHelper
     if defined? ActionView::RecordIdentifier
       include ActionView::RecordIdentifier
+    else
+      include ActionController::RecordIdentifier
     end
     include SimpleForm::ActionViewExtensions::FormHelper
     

@@ -45,6 +45,33 @@ module SlashAdmin
       end
     end
 
+    def each_controller(&block)
+      self.constants.each do |name|
+        const = self.const_get(name)
+        if const.is_a?(Class) && const < SlashAdmin::Controller
+          yield const
+        end
+      end
+    end
+
+    def send_module_event(name, *args)
+      @module_event_table ||= {}
+      chain = @module_event_table.fetch(name, [])
+      chain.each { |block| block.call *args }
+    end
+
+    def on_module_event(name, &block)
+      @module_event_table ||= {}
+
+      chain = @module_event_table[name]
+      if chain.nil?
+        chain = []
+        @module_event_table[name] = chain
+      end
+
+      chain << block
+    end
+    
     private
 
     def generate_module_name

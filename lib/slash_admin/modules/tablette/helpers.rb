@@ -1,7 +1,7 @@
 class Tablette::Table
-  def batch_select
+  def selectable_column
     column :select, :title => "Select" do |object|
-      render_index_batch_select object
+      render_selectable_column object
     end
   end
   

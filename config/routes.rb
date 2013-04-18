@@ -17,4 +17,9 @@ SlashAdmin::Engine.routes.draw do
       end
     end
   end
+
+  SlashAdmin.send_module_event(:creating_routes, self)
 end
+
+SlashAdmin.send_module_event(:created_routes)
+

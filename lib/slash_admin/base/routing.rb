@@ -21,6 +21,16 @@ module SlashAdmin
       @batch_actions = true
     end
 
+    def action_allowed?(action)
+      only = @resource_options[:only]
+      return only.include?(action) unless only.nil?
+
+      without = @resource_options[:without]
+      return !without.include?(action) unless without.nil?
+
+      true
+    end
+
     def default_actions(options = {})
       @resource_options = options
     end

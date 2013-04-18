@@ -1,7 +1,7 @@
 - breadcrumbs
 = page_title I18n.t('admin.index.title', :model => model_name)
 
-- if @filters.any?
+- if @layout.filters.any?
   .row-fluid
     .span8= render :partial => "admin/index/content"
     .span4= render :partial => "admin/index/filters"

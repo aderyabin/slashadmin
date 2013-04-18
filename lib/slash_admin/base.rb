@@ -27,4 +27,7 @@ module SlashAdmin
 
   module ViewHelpers
   end
+
+  module Components
+  end
 end

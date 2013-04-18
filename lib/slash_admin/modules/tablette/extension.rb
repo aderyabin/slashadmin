@@ -5,11 +5,15 @@ SlashAdmin.extension(:Base, :Tablette) do
     if self.class.slashadmin_index.nil?
       @table = render_to_string :partial => "/admin/index/default_index"
     else
-      @table = SlashAdmin::Tablette::ArbreTable.new(self, {
-        :html_options => {
-          :class => "table table-striped table-bordered table-hover"
-        }
-      }, &self.class.slashadmin_index).to_html(@objects)
+      table = nil
+      view_context.instance_exec do
+        table = SlashAdmin::Tablette::ArbreTable.new(self, {
+          :html_options => {
+            :class => "table table-striped table-bordered table-hover"
+          }
+        }, &controller.slashadmin_index).to_html(@objects)
+      end
+      @table = table
     end
   end
 end

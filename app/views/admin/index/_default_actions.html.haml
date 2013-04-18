@@ -1,3 +1,6 @@
-= link_to I18n.t('admin.actions.show'), object
-= link_to I18n.t('admin.actions.edit'), [ :edit, object ]
-= link_to I18n.t('admin.actions.destroy'), object, :method => :delete
+- if @routing.action_allowed? :show
+  = link_to I18n.t('admin.actions.show'), object
+- if @routing.action_allowed? :edit
+  = link_to I18n.t('admin.actions.edit'), [ :edit, object ]
+- if @routing.action_allowed? :destroy
+  = link_to I18n.t('admin.actions.destroy'), object, :method => :delete

@@ -32,7 +32,7 @@ class SlashAdmin::ShowFor::AttributesTable < Arbre::Component
     tag
   end
   
-  def capture(&block)
+  def capture(*args, &block)
     nested_context = Arbre::Context.new({}, @arbre_context.helpers)
     nested_context.instance_exec(@builder.object, &block)
     nested_context.to_s
