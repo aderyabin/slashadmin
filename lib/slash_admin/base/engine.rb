@@ -7,8 +7,6 @@ module SlashAdmin
     config.admin_modules          = [ "tablette", "show_for", "simple_form" ]
     config.authentication_method  = :authenticate_admin_user!
     config.current_user_method    = :current_admin_user
-    config.restrict_model         = false
-    config.unrestrict_model       = false
     config.brand                  = "SlashAdmin"
     config.brand_url              = { :controller => "dashboard", :action => "index" }
     config.compatibility          = nil

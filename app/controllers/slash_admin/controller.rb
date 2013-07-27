@@ -3,7 +3,6 @@ module SlashAdmin
     include BatchActions
     include SlashAdmin::Setup
     include SlashAdmin::DSL
-    include SlashAdmin::Restrictions
 
     before_filter :evaluate_blocks
 
@@ -15,7 +14,7 @@ module SlashAdmin
 
     # ACTIONS
     def index
-      @q = slashadmin_unrestrict(slashadmin_restrict(self.class.slashadmin_model)).search(params[:q])
+      @q = slashadmin_model.search(params[:q])
       @objects = @q.result(:distinct => true).page(params[:page])
 
       render_index_partial
@@ -26,7 +25,7 @@ module SlashAdmin
     end
 
     def new
-      @object = slashadmin_unrestrict(slashadmin_restrict.new)
+      @object = slashadmin_model.new
       render_form_partial
       
       respond_to do |format|
@@ -35,7 +34,7 @@ module SlashAdmin
     end
 
     def create
-      @object = slashadmin_unrestrict(slashadmin_restrict.new(slashadmin_params))
+      @object = slashadmin_model.new(slashadmin_params)
       
       respond_to do |format|
         if @object.save
@@ -47,9 +46,8 @@ module SlashAdmin
     end
 
     def update
-      object = slashadmin_restrict.find(params[:id])
-      updated = object.update_attributes(slashadmin_params)
-      @object = slashadmin_unrestrict(object)
+      @object = slashadmin_model.find(params[:id])
+      updated = @object.update_attributes(slashadmin_params)
       
       respond_to do |format|
         if updated
@@ -61,7 +59,7 @@ module SlashAdmin
     end
 
     def destroy
-      @object = slashadmin_restrict.find(params[:id])
+      @object = slashadmin_model.find(params[:id])
       @object.destroy
       
       respond_to do |format|
@@ -70,7 +68,7 @@ module SlashAdmin
     end
 
     def show
-      @object = slashadmin_unrestrict(slashadmin_restrict.find(params[:id]))
+      @object = slashadmin_model.find(params[:id])
       if self.class.slashadmin_show.nil?
         @page = render_to_string(:partial => "/admin/show/default_show").html_safe
       else
@@ -93,7 +91,7 @@ module SlashAdmin
     end
 
     def edit
-      @object = slashadmin_unrestrict(slashadmin_restrict.find(params[:id]))
+      @object = slashadmin_model.find(params[:id])
       render_form_partial
       
       respond_to do |format|
