@@ -2,7 +2,7 @@ module SlashAdmin::SimpleForm
   def self.simple_form_config
     {
       :default_wrapper        => :slashadmin_bootstrap,
-      :boolean_style          => :nested,
+      :boolean_style          => :inline,
       :button_class           => 'btn',
       :error_notification_tag => :div,
       :label_class            => 'control-label',

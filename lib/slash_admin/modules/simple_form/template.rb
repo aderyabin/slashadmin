@@ -40,7 +40,7 @@ module SlashAdmin::SimpleForm
         child.instance_variable_set :@arbre_context, @context
         child.parent = nil
       end
-      
+
       children
     end
     
