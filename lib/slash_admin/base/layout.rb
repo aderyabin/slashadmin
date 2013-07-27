@@ -26,6 +26,25 @@ module SlashAdmin
         @options = options
         @block = block
       end
+
+      def visible?(action)
+        except = @options[:except]
+        only   = @options[:only]
+
+        unless except.nil?
+          except = [ except ] unless except.is_a? Array
+            
+          return false if except.include? action
+        end
+
+        unless only.nil?
+          only = [ only ] unless only.is_a? Array
+            
+          return false unless only.include? action
+        end
+
+        true
+      end
     end
 
     attr_accessor :helper

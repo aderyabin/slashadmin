@@ -7,7 +7,7 @@ SlashAdmin::Engine.routes.draw do
 
     routing = const.new.slashadmin_routing
 
-    resources "#{resource}s", routing.resource_options.merge(:controller => "admin_#{resource}") do
+    resources resource.pluralize, routing.resource_options.merge(:controller => "admin_#{resource}") do
       if routing.batch_actions?
         post 'batch', :on => :collection, :action => "dispatch_batch"
       end

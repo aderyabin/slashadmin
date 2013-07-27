@@ -2,4 +2,7 @@
   - b.trail I18n.t('admin.index.title', :model => model_name), :action => "index"
 = page_title I18n.t('admin.new.title', :model => model_name)
 
+.index-actions
+  = render_action_items
+
 = @form

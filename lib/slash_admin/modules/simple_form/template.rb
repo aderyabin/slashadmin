@@ -10,6 +10,7 @@ module SlashAdmin::SimpleForm
       include ActionController::RecordIdentifier
     end
     include SimpleForm::ActionViewExtensions::FormHelper
+
     
     attr_reader :controller
     delegate :polymorphic_path, :to => :controller
@@ -73,7 +74,7 @@ module SlashAdmin::SimpleForm
         container.add_child(token_tag(authenticity_token))
       else
         html_options["method"] = "post"
-        container.add_child(method_tag(method))
+        container.add_child(tag(:input, :type => "hidden", :name => "_method", :value => method))
         container.add_child(token_tag(authenticity_token))
       end
 

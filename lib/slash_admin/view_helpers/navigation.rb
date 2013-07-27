@@ -27,7 +27,7 @@ SlashAdmin.view_helper(:Navigation) do
 
       next if menu_options[:hidden] || (menu_options.include?(:if) && !self.controller.instance_exec(&menu_options[:if]))
       
-      label = menu_options.fetch(:label, controller.slashadmin_model_name)
+      label = menu_options.fetch(:label, controller.slashadmin_model.model_name.human(:count => 3))
       parent = menu_options.fetch(:parent, "root")
       
       parent_node = search_in_tree(root) { |n| n[:label] == parent }
@@ -88,6 +88,24 @@ SlashAdmin.view_helper(:Navigation) do
     else
       @breadcrumbs_trail = {}
     end
+  end
+
+  def render_action_items
+    buffer = ''.html_safe
+
+    @layout.action_items.each do |action|
+      next unless action.visible? controller.action_name.to_sym
+
+      context = Arbre::Context.new({}, self)
+      context.build do |where|
+        where.instance_exec(&action.block)
+      end
+
+      buffer.safe_concat context.to_s
+      buffer.safe_concat ' '.html_safe
+    end
+
+    buffer
   end
  
   private

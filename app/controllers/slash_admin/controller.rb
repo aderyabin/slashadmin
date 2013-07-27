@@ -5,6 +5,7 @@ module SlashAdmin
     include SlashAdmin::DSL
 
     before_filter :evaluate_blocks
+    attr_reader :object, :objects, :q
 
     def self.initialize_slashadmin_controller
       batch_action :destroy do |objects|
@@ -69,6 +70,7 @@ module SlashAdmin
 
     def show
       @object = slashadmin_model.find(params[:id])
+
       if self.class.slashadmin_show.nil?
         @page = render_to_string(:partial => "/admin/show/default_show").html_safe
       else
@@ -107,7 +109,34 @@ module SlashAdmin
       end
     end
 
+    def action_missing(action, *args)
+      @routing.custom_actions.each do |custom_action|
+        if custom_action.name.to_s == action
+          return slashadmin_invoke_custom_action custom_action, *args
+        end
+      end
+
+      raise AbstractController::ActionNotFound, "Custom action #{action} is not defined"
+    end
+
     protected
+
+    def slashadmin_invoke_custom_action(custom_action, *args)
+      if custom_action.options[:on] == :member
+        @object = slashadmin_model.find(params[:id])
+      end
+
+      if custom_action.block.nil?
+        @page = render_to_string("/admin/#{slashadmin_model.model_name.plural}/#{custom_action.name}", :layout => false).html_safe
+      
+
+        respond_to do |format|
+          format.html { render :layout => "admin", :template => "admin/show" }
+        end
+      else
+        instance_exec *args, &custom_action.block
+      end
+    end
 
     def slashadmin_params
       name = slashadmin_model_name.underscore

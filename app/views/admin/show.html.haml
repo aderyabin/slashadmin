@@ -3,7 +3,10 @@
 = page_title I18n.t('admin.show.title', :model => model_name, :id => @object.id)
 
 .index-actions
-  = link_to I18n.t('admin.actions.edit'), { :action => "edit" }, :class => "btn"
-  = link_to I18n.t('admin.actions.destroy'), @object, :method => :delete, :class => "btn btn-danger"
-  
+  - if @routing.action_allowed? :edit
+    = link_to I18n.t('admin.actions.edit'), { :action => "edit" }, :class => "btn"
+  - if @routing.action_allowed? :destroy
+    = link_to I18n.t('admin.actions.destroy'), @object, :method => :delete, :class => "btn btn-danger"
+  = render_action_items
+
 = @page
