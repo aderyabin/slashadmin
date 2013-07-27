@@ -6,11 +6,7 @@ module SlashAdmin
         instance_exec &block
       end
     end
-
-    def compatible_with?(engine)
-      SlashAdmin::Engine.config.compatibility == engine
-    end
-
+    
     def configure(&block)
       yield SlashAdmin::Engine.config
     end

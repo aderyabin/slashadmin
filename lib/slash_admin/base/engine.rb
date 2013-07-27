@@ -9,15 +9,10 @@ module SlashAdmin
     config.current_user_method    = :current_admin_user
     config.brand                  = "SlashAdmin"
     config.brand_url              = { :controller => "dashboard", :action => "index" }
-    config.compatibility          = nil
     
     initializer "slashadmin.preload_controllers", :after => :after_initialize do |app|
       config.admin_modules.each do |name|
         require "slash_admin/modules/#{name}"
-      end
-    
-      unless config.compatibility.nil?
-        require "slash_admin/modules/#{config.compatibility}"
       end
 
       collect_controller_paths do |path|
@@ -28,10 +23,6 @@ module SlashAdmin
 
       load_controllers
       ActionDispatch::Reloader.to_prepare &method(:load_controllers)
-
-      SlashAdmin::Shims.constants.each do |name|
-        SlashAdmin::Shims.const_get(name).include!
-      end
     end
 
     private

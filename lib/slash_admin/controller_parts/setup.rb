@@ -13,11 +13,6 @@ module SlashAdmin
         batch_model model
 
         include_admin_set SlashAdmin::AdminSets::Base
-
-        compat = Engine.config.compatibility
-        unless compat.nil?
-          include_admin_set SlashAdmin::AdminSets.const_get(compat.to_s.camelize)
-        end
         
         alias_name = "Admin#{model.name}Controller"
         SlashAdmin.const_set alias_name, self

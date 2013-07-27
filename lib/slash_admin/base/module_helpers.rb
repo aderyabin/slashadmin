@@ -10,19 +10,6 @@ module SlashAdmin
       check_for_class_methods
     end
 
-    def shim_for(klass, &block)
-      mod = Module.new
-      SlashAdmin::Shims.const_set(generate_module_name, mod)
-
-      mod.send :extend, ActiveSupport::Concern
-      mod.send :extend, SlashAdmin::Shim
-      mod.send :include_into, klass
-
-      mod.class_exec(&block)
-
-      check_for_class_methods
-    end
-
     def view_helper(name, &block)
       mod = Module.new
       SlashAdmin::ViewHelpers.const_set(name, mod)
