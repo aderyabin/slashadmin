@@ -8,7 +8,7 @@
 
     - column I18n.t('admin.index.actions_column')
 
-  - batch_select
+  - selectable_column
   - columns.each do |type, name|
     - if type == :association
       - column name do |record|
