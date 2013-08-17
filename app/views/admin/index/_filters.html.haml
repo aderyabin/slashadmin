@@ -1,7 +1,7 @@
 = search_form_for @q, :html => { :class => "form-horizontal" } do |f|
   - @layout.filters.each do |filter|
     .control-group
-      = f.label "#{filter.attribute}_cont", filter.options[:label], :class => "control-label"
+      = f.label "#{filter.attribute}_cont", (filter.options[:label] || attribute_name(filter.attribute)), :class => "control-label"
       .controls= f.text_field "#{filter.attribute}_cont"
   .form-actions
     = f.submit I18n.t('admin.actions.filter'), :name => nil, :class => "btn btn-primary"
