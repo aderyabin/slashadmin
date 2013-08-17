@@ -23,10 +23,10 @@ module SlashAdmin
 
     def action_allowed?(action)
       only = @resource_options[:only]
-      return only.include?(action) unless only.nil?
+      return Array(only).include?(action) unless only.nil?
 
       without = @resource_options[:without]
-      return !without.include?(action) unless without.nil?
+      return !Array(without).include?(action) unless without.nil?
 
       true
     end
